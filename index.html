@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta name="description" content="김원정의 개발 포트폴리오 — AI 에이전트, 온디바이스 추론, 서비스 백엔드 프로젝트">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://awaykim.github.io/">
+  <meta property="og:title" content="김원정 | 개발 포트폴리오">
+  <meta property="og:description" content="AI 에이전트, 온디바이스 추론, RAG·GPU 서버, 서비스 백엔드 프로젝트">
+  <title>김원정 | 개발 포트폴리오</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --surface: #fff;
+      --ink: #14181c;
+      --text: #3d464d;
+      --muted: #6b747b;
+      --line: #e3e5e2;
+      --soft: #f0f2ef;
+      --accent: #2f6b4f;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      line-height: 1.6;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button { font: inherit; cursor: pointer; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: #d6ecc4; }
+
+    .skip { position: absolute; top: -100px; left: 12px; z-index: 30; padding: 10px; background: #fff; }
+    .skip:focus { top: 12px; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 245, .9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .header-in { display: flex; align-items: center; justify-content: space-between; min-height: 64px; }
+    .brand { font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
+    .nav { display: flex; align-items: center; gap: 24px; }
+    .nav a { color: var(--text); font-size: .94rem; font-weight: 600; text-decoration: none; }
+    .nav a:hover { color: var(--ink); }
+    .nav .nav-cta { padding: 8px 14px; border-radius: 8px; background: var(--ink); color: #fff; }
+
+    /* Intro */
+    .intro { padding: 72px 0 56px; }
+    .intro h1 { margin: 0; font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1.15; letter-spacing: -.04em; }
+    .intro .role { margin: 6px 0 20px; color: var(--accent); font-size: 1.1rem; font-weight: 700; }
+    .intro .lede { max-width: 640px; margin: 0; color: var(--text); font-size: 1.05rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .links a {
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      font-size: .88rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .links a:hover { border-color: #c9cdc8; }
+    .links .icon-link { display: inline-flex; align-items: center; justify-content: center; width: 40px; padding: 0; }
+
+    /* Sections */
+    .group { padding: 56px 0 24px; border-top: 1px solid var(--line); scroll-margin-top: 64px; }
+    .group-head { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+    .group-head h2 { margin: 0; font-size: 1.4rem; letter-spacing: -.03em; }
+    .group-head p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .group-head .company-logo { height: 24px; width: auto; }
+    .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .project-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    /* Card */
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(20, 24, 28, .07); }
+    .card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .card-logo { flex: none; width: 52px; height: 52px; border-radius: 12px; object-fit: contain; }
+    .card-logo.tile { padding: 6px; border: 1px solid var(--line); background: #fff; }
+    .card-meta { color: var(--muted); font-size: .8rem; font-weight: 600; }
+    .card h3 { margin: 0; font-size: 1.22rem; line-height: 1.3; letter-spacing: -.025em; }
+    .card p { margin: 0; color: var(--text); font-size: .93rem; line-height: 1.6; }
+    .card .result {
+      margin-top: 14px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      background: #eef5ea;
+      color: var(--accent);
+      font-size: .85rem;
+      font-weight: 700;
+    }
+    .card .tasks { margin-top: 12px; color: var(--ink); font-size: .84rem; font-weight: 600; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 20px; }
+    .chips span { padding: 3px 8px; border-radius: 5px; background: var(--soft); color: #4f5a52; font-size: .75rem; font-weight: 600; }
+    .card-actions { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+    .card-actions button {
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      font-size: .85rem;
+      font-weight: 700;
+    }
+    .card-actions button:hover { border-color: var(--ink); }
+    .card-actions a { color: var(--accent); font-size: .85rem; font-weight: 700; text-decoration: none; }
+    .card-actions a:hover { text-decoration: underline; }
+
+    /* Stack */
+    .stack { margin: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .stack > div { display: flex; align-items: baseline; gap: 16px; padding: 16px 22px; }
+    .stack > div + div { border-top: 1px solid var(--line); }
+    .stack dt { flex: none; width: 120px; color: var(--ink); font-size: .9rem; font-weight: 700; }
+    .stack dd { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+    .stack span { padding: 3px 9px; border-radius: 5px; background: var(--soft); color: #3f4a42; font-size: .82rem; font-weight: 600; }
+
+    /* Education */
+    .edu { margin: 0; padding: 0; list-style: none; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .edu li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 18px 22px; }
+    .edu li + li { border-top: 1px solid var(--line); }
+    .edu strong { display: block; font-size: 1rem; }
+    .edu span { display: block; margin-top: 2px; color: var(--text); font-size: .9rem; }
+    .edu time { flex: none; color: var(--muted); font-size: .85rem; font-weight: 600; }
+
+    /* Detail media */
+    .media {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      height: 220px;
+      margin: 0 -26px 24px;
+      overflow: hidden;
+    }
+    .media-veronica { background: radial-gradient(circle at 50% 50%, #17335a 0%, #070c16 72%); }
+    .media-veronica img { width: 132px; filter: drop-shadow(0 10px 24px rgba(40, 120, 255, .35)); }
+    .media-vista { flex-direction: column; gap: 16px; background: #000; }
+    .media-vista .device { width: 180px; }
+    .media-vista .wordmark { height: 17px; }
+    .media-dotcane { background: #f4e6b8; }
+    .media-dotcane img { width: 148px; border-radius: 30px; box-shadow: 0 12px 24px rgba(90, 70, 20, .16); }
+    .media-kkaeal { justify-content: space-between; padding: 0 48px; background: #fff3d9; }
+    .media-dream { justify-content: space-between; padding: 0 48px; background: #f2ece8; }
+    .media-backend { flex-direction: column; gap: 14px; background: #13232d; color: #e8f1ee; }
+    .media-backend .gpu-label { color: #8fd3b8; font-size: .78rem; font-weight: 700; letter-spacing: .12em; }
+    .media-backend .models { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 24px; }
+    .media-backend .models span { padding: 6px 12px; border: 1px solid rgba(255, 255, 255, .18); border-radius: 8px; background: rgba(255, 255, 255, .06); font-size: .88rem; font-weight: 600; }
+    .media-backend .mem { color: #b9cbc6; font-size: .82rem; font-weight: 600; }
+    .brand-block { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+    .brand-block .app-icon { width: 64px; border-radius: 15px; box-shadow: 0 6px 14px rgba(0, 0, 0, .1); }
+    .brand-block .wordmark { height: 26px; width: auto; }
+    .brand-block .logo { width: 88px; }
+    .brand-block .caption { color: #6d625a; font-size: .8rem; font-weight: 600; }
+    .phones { display: flex; align-items: flex-start; gap: 12px; }
+    .phone {
+      width: 96px;
+      height: 172px;
+      overflow: hidden;
+      border: 4px solid #23272a;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(60, 45, 20, .2);
+    }
+    .phone + .phone { margin-top: 22px; }
+    .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+    /* Footer */
+    .footer { margin-top: 56px; padding: 32px 0; border-top: 1px solid var(--line); }
+    .footer-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: var(--muted); font-size: .88rem; }
+    .footer-in div { display: flex; gap: 16px; }
+    .footer a { color: var(--ink); font-weight: 600; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* Dialog */
+    dialog {
+      width: min(720px, calc(100% - 28px));
+      max-height: min(90vh, 900px);
+      padding: 0;
+      border: 0;
+      border-radius: var(--radius);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .3);
+    }
+    dialog::backdrop { background: rgba(16, 20, 18, .55); }
+    .dialog-top {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .dialog-top button { width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-size: 1.15rem; line-height: 1; }
+    .dialog-body { padding: 0 26px 28px; color: var(--text); }
+    .dialog-body .lead { margin: 0; color: var(--ink); font-size: 1.02rem; font-weight: 500; }
+    .dialog-body h4 { margin: 24px 0 6px; color: var(--ink); font-size: .98rem; }
+    .dialog-body p, .dialog-body li { font-size: .94rem; }
+    .dialog-body p { margin: 0; }
+    .dialog-body ul { margin: 0; padding-left: 1.1em; }
+    .dialog-body li + li { margin-top: 4px; }
+    .dialog-body a { color: var(--accent); font-weight: 600; }
+    .dialog-body .repo-links { margin-top: 20px; }
+
+    @media (max-width: 960px) {
+      .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px) {
+      .wrap { width: calc(100% - 32px); }
+      .nav { gap: 14px; }
+      .nav .nav-hide { display: none; }
+      .intro { padding: 44px 0 40px; }
+      .group { padding-top: 40px; }
+      .group-head { flex-wrap: wrap; gap: 8px 12px; }
+      .project-grid, .project-grid.two { grid-template-columns: 1fr; }
+      .stack > div { flex-direction: column; gap: 8px; padding: 16px 18px; }
+      .edu li { flex-direction: column; gap: 4px; padding: 16px 18px; }
+      .dialog-body { padding: 0 20px 24px; }
+      .media { margin: 0 -20px 20px; }
+      .media-kkaeal, .media-dream { padding: 0 24px; }
+      .footer-in { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 380px) {
+      .phone { width: 88px; height: 158px; }
+      .media-kkaeal .brand-block .wordmark { height: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card { transition: none; }
+      .card:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">본문으로 건너뛰기</a>
+
+  <header class="header">
+    <div class="wrap header-in">
+      <a class="brand" href="#top">김원정</a>
+      <nav class="nav" aria-label="주요 메뉴">
+        <a href="#work">프로젝트</a>
+        <a class="nav-hide" href="https://github.com/awaykim" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="nav-cta" href="mailto:wonj010101@gmail.com">이메일</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro" id="top">
+      <div class="wrap">
+        <h1>김원정</h1>
+        <p class="role">AI · 풀스택 엔지니어</p>
+        <p class="lede">시각장애인용 AI 에이전트를 Windows·macOS·Android에 베타 출시하고, 온디바이스 AI 앱과 RAG 백엔드, GPU 추론 서버를 개발했습니다. 가입 계정 2,000여 명의 초단기 아르바이트 매칭 서비스에서 백엔드 개발과 운영도 맡았습니다.</p>
+        <div class="links">
+          <a href="mailto:wonj010101@gmail.com">wonj010101@gmail.com</a>
+          <a href="https://github.com/awaykim" target="_blank" rel="noopener noreferrer">github.com/awaykim ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" id="work">
+      <div class="wrap">
+        <div class="group-head">
+          <img class="company-logo" src="portfolio_assets/dot-logo.svg" alt="dot">
+          <h2>주식회사 닷</h2>
+          <p>AI개발파트 · 2025.03–현재</p>
+        </div>
+        <div class="project-grid two">
+          <article class="card">
+            <div class="card-head">
+              <img class="card-logo" src="portfolio_assets/veronica-icon.png" alt="">
+              <div>
+                <div class="card-meta">AI 에이전트 · Windows·macOS·Android 베타</div>
+                <h3>베로니카</h3>
+              </div>
+            </div>
+            <p>파일·셸·브라우저·음성 도구로 웹 검색과 점자책 변환, 컴퓨터 조작을 돕는 AI 에이전트.</p>
+            <div class="result">웹 작업 시간·토큰 65% 절감 · 의도 분류 지연 80% 단축</div>
+            <div class="tasks">Python 에이전트 · Flutter 앱 · 도구 실행 · 웹 작업 재사용</div>
+            <div class="chips"><span>Python</span><span>Flutter</span><span>mT5</span><span>pgvector</span></div>
+            <div class="card-actions">
+              <button type="button" data-detail="veronica">상세 보기</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <img class="card-logo tile" src="portfolio_assets/dotvista-icon.png" alt="">
+              <div>
+                <div class="card-meta">온디바이스 접근성 AI</div>
+                <h3>닷비스타</h3>
+              </div>
+            </div>
+            <p>발표 자료의 글과 이미지를 기기에서 분석해 음성과 점자로 전달하는 앱.</p>
+            <div class="result">Microsoft Build 시연 기술 채택</div>
+            <div class="tasks">VLM·SLM·OCR 분석 · GPU·NPU 추론 경로 전환</div>
+            <div class="chips"><span>VLM / OCR</span><span>ONNX Runtime</span><span>GPU / NPU</span></div>
+            <div class="card-actions">
+              <button type="button" data-detail="vista">상세 보기</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <img class="card-logo tile" src="portfolio_assets/dotcane-icon.png" alt="">
+              <div>
+                <div class="card-meta">점자 학습 앱 · Windows·macOS·iOS·Android</div>
+                <h3>닷케인</h3>
+              </div>
+            </div>
+            <p>숫자·점자 수업을 음성으로 진행하는 시각장애 학생용 학습 앱.</p>
+            <div class="tasks">Vue·WinUI·Flutter 앱 · 음성 상태 관리 · 점자 디스플레이 연동</div>
+            <div class="chips"><span>Vue</span><span>WinUI</span><span>Flutter</span><span>STT / TTS</span><span>BLE</span></div>
+            <div class="card-actions">
+              <button type="button" data-detail="dotcane">상세 보기</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <img class="card-logo tile" src="portfolio_assets/dot-logo.svg" alt="">
+              <div>
+                <div class="card-meta">AI 백엔드 · 추론 인프라</div>
+                <h3>RAG · GPU 추론 서버</h3>
+              </div>
+            </div>
+            <p>사내 문서 검색과 단일 L4 GPU의 다중 모델 서빙을 위한 백엔드.</p>
+            <div class="result">이미지 생성 모델 메모리 약 20GB → 11GB</div>
+            <div class="tasks">청킹·임베딩 선정·리랭킹 · 모델 양자화 · 동시 요청 제어</div>
+            <div class="chips"><span>FastAPI</span><span>pgvector</span><span>Celery</span><span>GCP</span></div>
+            <div class="card-actions"><button type="button" data-detail="backend">상세 보기</button></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <div class="wrap">
+        <div class="group-head">
+          <h2>서비스 · 졸업 프로젝트</h2>
+        </div>
+        <div class="project-grid two">
+          <article class="card">
+            <div class="card-head">
+              <img class="card-logo" src="portfolio_assets/kkaeal-icon.png" alt="">
+              <div>
+                <div class="card-meta">서비스 백엔드 · 2024.12–2026.03</div>
+                <h3>깨알알바</h3>
+              </div>
+            </div>
+            <p>단기 알바 모집과 지원, 근무 요청을 처리하는 서비스. 백엔드 개발과 운영을 맡았습니다.</p>
+            <div class="result">가입 계정 2,021명 · 운영 근무지 1,779곳 · 앱스토어 평점 5.0 (2026.11 기준)</div>
+            <div class="tasks">API 개발 · 배포 자동화 · 기능 개선</div>
+            <div class="chips"><span>TypeScript</span><span>NestJS</span><span>Firestore</span><span>GCP</span></div>
+            <div class="card-actions">
+              <button type="button" data-detail="kkaeal">상세 보기</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <img class="card-logo tile" src="portfolio_assets/capston-medcolearn.png" alt="">
+              <div>
+                <div class="card-meta">졸업 프로젝트 · 2023.09–2024.06</div>
+                <h3>DreamGuard</h3>
+              </div>
+            </div>
+            <p>심전도와 코골이 녹음 파일로 수면무호흡 위험도를 분석하는 모바일 앱.</p>
+            <div class="result">교내 소프트웨어창업경진대회 대상</div>
+            <div class="tasks">데이터 전처리 · 모델 학습 · Flask API · AWS 배포</div>
+            <div class="chips"><span>PyTorch</span><span>Flask</span><span>AWS</span><span>ECG</span></div>
+            <div class="card-actions">
+              <button type="button" data-detail="dreamguard">상세 보기</button>
+              <a href="https://github.com/awaykim/Capston" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <div class="wrap">
+        <div class="group-head">
+          <h2>기술 스택</h2>
+        </div>
+        <dl class="stack">
+          <div>
+            <dt>언어</dt>
+            <dd><span>Python</span><span>TypeScript</span><span>Dart</span><span>C#</span></dd>
+          </div>
+          <div>
+            <dt>앱</dt>
+            <dd><span>Flutter</span><span>Vue 3</span><span>WinUI 3</span><span>WebView2</span></dd>
+          </div>
+          <div>
+            <dt>백엔드 · 데이터</dt>
+            <dd><span>FastAPI</span><span>Flask</span><span>Node.js</span><span>Express</span><span>NestJS</span><span>PostgreSQL</span><span>MySQL</span><span>Redis</span><span>Celery</span><span>Firestore</span><span>Prisma</span></dd>
+          </div>
+          <div>
+            <dt>AI</dt>
+            <dd><span>PyTorch</span><span>ONNX</span><span>Hugging Face</span><span>VLM / SLM</span><span>OCR</span><span>RAG</span><span>pgvector</span></dd>
+          </div>
+          <div>
+            <dt>인프라 · 플랫폼</dt>
+            <dd><span>Docker</span><span>GCP</span><span>Cloud SQL</span><span>Cloud Functions</span><span>AWS</span><span>GitHub Actions</span><span>PyInstaller</span><span>BLE</span><span>Named Pipe IPC</span><span>WinML</span></dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="group">
+      <div class="wrap">
+        <div class="group-head">
+          <h2>학력</h2>
+        </div>
+        <ul class="edu">
+          <li>
+            <div>
+              <strong>이화여자대학교</strong>
+              <span>컴퓨터공학 학사 · GPA 3.80/4.30</span>
+            </div>
+            <time>2021.03–2026.02</time>
+          </li>
+          <li>
+            <div>
+              <strong>EPITA, France</strong>
+              <span>Visiting Student · Network, Security &amp; AI coursework</span>
+            </div>
+            <time>2024.07–2024.08</time>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="group">
+      <div class="wrap">
+        <div class="group-head">
+          <h2>논문 · 수상</h2>
+        </div>
+        <ul class="edu">
+          <li>
+            <div>
+              <strong>시연 논문 공동저자 · 한국햅틱스학회</strong>
+              <span>시각장애인의 프레젠테이션 슬라이드 접근성을 위한 On-Device AI 기반 시-촉각 변환 시스템</span>
+            </div>
+            <time>2026</time>
+          </li>
+          <li>
+            <div>
+              <strong>ICT 학점연계 프로젝트 인턴십 우수성과 대상</strong>
+              <span>과학기술정보통신부 장관상</span>
+            </div>
+            <time>2025</time>
+          </li>
+          <li>
+            <div>
+              <strong>창업집중훈련 FLOW 최우수상</strong>
+              <span>한국연구재단 · 깨알알바</span>
+            </div>
+            <time>2025</time>
+          </li>
+          <li>
+            <div>
+              <strong>제5회 소프트웨어창업경진대회 대상</strong>
+              <span>이화여자대학교 · DreamGuard</span>
+            </div>
+            <time>2023</time>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span>김원정 · 서울</span>
+      <div>
+        <a href="mailto:wonj010101@gmail.com">wonj010101@gmail.com</a>
+        <a href="https://github.com/awaykim" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <dialog id="case-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-top">
+      <strong id="dialog-title">프로젝트 상세</strong>
+      <button type="button" id="close-dialog" aria-label="닫기">×</button>
+    </div>
+    <div class="dialog-body" id="dialog-body"></div>
+  </dialog>
+
+  <template id="detail-veronica">
+    <div class="media media-veronica">
+      <img src="portfolio_assets/veronica-logo.png" alt="베로니카 앱 아이콘">
+    </div>
+    <p class="lead">시각장애 동료의 웹 이용을 돕기 위해 AI 에이전트 개발을 제안했습니다. 사용자의 요청에 따라 파일을 찾고, 셸 명령을 실행하고, 브라우저를 조작하는 앱으로, 웹 검색과 점자책 변환, 컴퓨터 조작(Computer Use)을 지원합니다.</p>
+    <h4>문제와 역할</h4>
+    <p>모든 요청을 LLM으로 처리하면 단순한 명령에도 응답이 늦어졌습니다. Python으로 에이전트를, Flutter로 앱을 개발하고, 요청의 복잡도에 따라 기기에서 처리하거나 클라우드 LLM에 보내도록 구현했습니다.</p>
+    <h4>핵심 구현</h4>
+    <ul>
+      <li>웹 페이지 HTML에서 조작 가능한 요소와 변경 정보만 추려 에이전트에 전달하는 전처리를 구현했습니다. 이를 적용한 웹 작업에서 처리 시간과 토큰 사용량을 각각 약 30% 줄였습니다.</li>
+      <li>6,770건의 음성 명령 데이터로 mT5-small을 파인튜닝해 요청의 의도를 분류하도록 했습니다. LLM으로 분류할 때보다 분류에 걸리는 시간을 80% 줄였습니다.</li>
+      <li>단순 명령은 기기에서 처리하고, 복잡한 요청만 클라우드 LLM에 보내 평균 응답 시간을 50% 줄였습니다.</li>
+      <li>에이전트가 작업을 수행한 절차를 저장해 이후 요청에서도 다시 활용하도록 했습니다. 저장된 절차를 재사용한 작업은 첫 실행보다 처리 시간과 토큰 사용량이 각각 약 65% 줄었습니다.</li>
+    </ul>
+    <h4>배포</h4>
+    <p>Windows·macOS·Android 베타 배포와 구독 관리, 자동 업데이트, CI/CD를 운영했습니다.</p>
+  </template>
+
+  <template id="detail-vista">
+    <div class="media media-vista">
+      <img class="device" src="portfolio_assets/dotpad-front.png" alt="점자 그래픽 디스플레이 닷패드">
+      <img class="wordmark" src="portfolio_assets/dotvista-logo.svg" alt="DotVista">
+    </div>
+    <p class="lead">발표 자료의 글과 이미지를 분석해 음성과 점자로 전달하는 앱입니다.</p>
+    <h4>설계 선택</h4>
+    <p>사용자의 기기마다 GPU·NPU 구성이 달라 모델 실행 방식을 선택해야 했습니다. CUDA, QNN, DirectML을 순서대로 확인하고, 사용할 수 있는 방식으로 모델을 실행하도록 구현했습니다.</p>
+    <h4>결과</h4>
+    <p>Microsoft Build 시연 기술로 채택됐습니다. 관련 시연 논문(한국햅틱스학회, 2026)의 공동저자로 참여했습니다.</p>
+  </template>
+
+  <template id="detail-dotcane">
+    <div class="media media-dotcane">
+      <img src="portfolio_assets/dotcane-icon.png" alt="닷케인 앱 아이콘">
+    </div>
+    <p class="lead">시각장애 학생이 음성 안내를 듣고 말로 답하며 숫자와 점자를 배우는 앱입니다. Windows·macOS·iOS·Android에 배포했습니다.</p>
+    <h4>프론트엔드와 앱 패키징</h4>
+    <p>Vue로 음성 제어와 학습 화면, AI 촉각 그래픽 변환 편집 화면을 포함한 프론트엔드 전반을 개발하고, WinUI·Flutter로 앱을 패키징했습니다.</p>
+    <h4>음성 처리</h4>
+    <ul>
+      <li>사용자의 발화를 감지해 녹음을 시작·종료하고, 음성 인식과 음성 안내를 연결했습니다. 선택한 언어에 맞춰 음성을 처리하도록 구현했습니다.</li>
+      <li>LLM이 응답을 만드는 동안 들어온 음성 입력과 음성 안내 중복 재생이 충돌하지 않도록 듣기·처리·응답 상태를 나눴습니다. 무음 구간에서 생기는 잘못된 전사는 VAD로 걸러냈습니다.</li>
+    </ul>
+    <h4>점자 디스플레이 연동</h4>
+    <ul>
+      <li>BLE 기기 자동 스캔·재연결, 기기 전환, 연결 상태 음성 알림을 개발했습니다.</li>
+      <li>여러 앱이 점자 디스플레이 연결을 두고 충돌하던 문제를 공통 브로커와 앱 간 통신 구조로 해결했습니다.</li>
+      <li>C#/WinRT로 구현된 점자 디스플레이 연결 기능을 Flutter 플랫폼 채널로 옮겨 Flutter 앱에서도 쓸 수 있게 했습니다.</li>
+    </ul>
+  </template>
+
+  <template id="detail-kkaeal">
+    <div class="media media-kkaeal">
+      <div class="brand-block">
+        <img class="app-icon" src="portfolio_assets/kkaeal-icon.png" alt="깨알알바 앱 아이콘">
+        <img class="wordmark" src="portfolio_assets/kkaeal-logo.svg" alt="깨알알바">
+      </div>
+      <div class="phones">
+        <div class="phone"><img src="portfolio_assets/kkaeal-home.png" alt="깨알알바 홈 화면"></div>
+        <div class="phone"><img src="portfolio_assets/kkaeal-quick.png" alt="깨알알바 모집 화면"></div>
+      </div>
+    </div>
+    <p class="lead">초단기 아르바이트 매칭 서비스의 초기 기획에 참여하고, 백엔드 개발과 운영을 전담했습니다.</p>
+    <h4>출시와 개선</h4>
+    <ul>
+      <li>Node.js·TypeScript·Firestore·GCP 기반 서버와 Docker·GitHub Actions 배포 자동화를 구현했습니다.</li>
+      <li>Cloud Functions로 가입·매장 등록·긴급호출 매칭 지표를 매일 집계하는 운영 대시보드를 만들고, 로깅·모니터링으로 기능별 사용 패턴 분석을 지원했습니다.</li>
+      <li>사용자 의견과 앱 재사용률을 확인하며 상권별 인력 추천, 평가, 알림 기능을 개발했습니다.</li>
+      <li>기능이 늘어나면서 서버를 기능별 모듈로 나누고, NestJS와 PostgreSQL로 전환했습니다.</li>
+    </ul>
+    <h4>결과</h4>
+    <p>2026.11 기준 가입 계정 2,021명, 운영 근무지 1,779곳, 앱스토어 평점 5.0입니다. 2025 예비창업패키지에 선정됐고, 창업집중훈련 FLOW 최우수상(한국연구재단, 2025.02)을 받았습니다.</p>
+  </template>
+
+  <template id="detail-backend">
+    <div class="media media-backend">
+      <span class="gpu-label">SINGLE L4 GPU</span>
+      <div class="models"><span>임베딩</span><span>STT</span><span>이미지 생성</span><span>배경 제거</span></div>
+      <span class="mem">이미지 생성 모델 4비트 양자화 · 약 20GB → 11GB</span>
+    </div>
+    <p class="lead">사내 문서를 검색하는 RAG 백엔드와, L4 GPU 한 대에서 여러 모델을 서빙하는 추론 서버를 개발했습니다.</p>
+    <h4>RAG 백엔드</h4>
+    <ul>
+      <li>PostgreSQL·pgvector 기반 사내 지식 RAG에 문서 청킹, 임베딩 모델 선정, 리랭킹을 적용해 검색 파이프라인을 구성했습니다.</li>
+      <li>문서 원문 조회 API, 발행·버전 관리, 공유 문서의 개인정보 자동 탐지·제거 기능을 개발했습니다.</li>
+    </ul>
+    <h4>GPU 추론 서버</h4>
+    <ul>
+      <li>L4 GPU 한 대에서 텍스트 임베딩, 음성 인식, 이미지 생성, 배경 제거 모델 4종을 서빙했습니다.</li>
+      <li>이미지 생성 모델을 4비트 양자화해 메모리를 약 20GB에서 11GB로 줄였습니다.</li>
+      <li>동시 요청 상한과 HTTP 429·Retry-After 응답을 도입해, 요청이 몰릴 때 대기가 쌓이고 타임아웃이 연쇄로 나는 것을 막았습니다.</li>
+    </ul>
+    <h4>운영</h4>
+    <p>FastAPI·Celery·Redis 기반으로 서버를 만들고, GCP 로드밸런싱과 로깅·모니터링, GitHub Actions 자동 배포를 구성했습니다.</p>
+  </template>
+
+  <template id="detail-dreamguard">
+    <div class="media media-dream">
+      <div class="brand-block">
+        <img class="logo" src="portfolio_assets/capston-medcolearn.png" alt="MedCoLearn 앱 로고">
+        <span class="caption">MedCoLearn 앱</span>
+      </div>
+      <div class="phones">
+        <div class="phone"><img src="portfolio_assets/capston-splash.png" alt="MedCoLearn 앱 시작 화면"></div>
+      </div>
+    </div>
+    <p class="lead">ECG와 코골이 음성을 결합해 폐쇄성 수면무호흡 위험도를 산출하는 졸업 프로젝트입니다.</p>
+    <h4>담당 범위</h4>
+    <p>생체신호·음성 전처리 파이프라인, PyTorch 모델 학습, Flask 추론 API, 모바일 앱 파일 업로드 연동과 AWS 배포를 맡았습니다.</p>
+    <h4>결과</h4>
+    <p>제5회 이화여자대학교 소프트웨어창업경진대회 대상을 받았습니다.</p>
+    <p class="repo-links">
+      <a href="https://github.com/awaykim/Capston" target="_blank" rel="noopener noreferrer">앱 저장소 ↗</a>
+      ·
+      <a href="https://github.com/awaykim/DreamGuard_AI" target="_blank" rel="noopener noreferrer">AI 저장소 ↗</a>
+    </p>
+  </template>
+
+  <script>
+    const dialog = document.querySelector('#case-dialog');
+    const body = document.querySelector('#dialog-body');
+    const title = document.querySelector('#dialog-title');
+
+    document.querySelectorAll('[data-detail]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const template = document.querySelector('#detail-' + button.dataset.detail);
+        title.textContent = button.closest('.card').querySelector('h3').textContent;
+        body.replaceChildren(template.content.cloneNode(true));
+        dialog.showModal();
+        dialog.scrollTop = 0;
+      });
+    });
+
+    document.querySelector('#close-dialog').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  </script>
+</body>
+</html>
